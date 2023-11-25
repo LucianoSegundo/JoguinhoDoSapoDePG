@@ -12,13 +12,20 @@ public class Partida {
 	private int jogador2 =0;
 	private Tabuleiro tabuleiro;
 	
-	public  void mostrarPlacar() {
-		System.out.println("____________________________");
+	public void introducao() {
+		System.out.println("Você está jogando tananan, uma pequena explicação de como jogar, primeiro você "
+				+ "seleciona a peça que deseja mover, primeiro digitando a linha e depois a coluna, em seguida digite a "
+				+ "direção que deseja mover a peça, caso tente  mover para uma posição ocupada ou para fora do tabuleiro a jogada será perdida."
+				+ "para ganhar, quando a soma dos pontos adquiridos atingir 70%, quem tiver mais pontos ganha, em caso de empate,quem conseguir o proximo ponto ganha");
 		System.out.println();
-		System.out.println("Pontuação jogador 1: " + jogador1 +"                   Pontuação jogador 2: " + jogador2);
+		System.out.println("Botões de movimento:");
+		System.out.println("W: Cima");
+		System.out.println("S: Baixo");
+		System.out.println("A: Esquerda");
+		System.out.println("D: Direita");
 		System.out.println();
-		System.out.println("____________________________");
 	}
+	
 	public Boolean definirRegra() {
 		
 		System.out.println("Dois modos de jogo estão disponiveis o tradicional, "
@@ -39,24 +46,47 @@ public class Partida {
 			}
 			return false;
 	}
+	
+	public  void mostrarPlacar() {
+		System.out.println("____________________________");
+		System.out.println();
+		System.out.println("Pontuação jogador 1: " + jogador1 +"                   Pontuação jogador 2: " + jogador2);
+		System.out.println();
+		System.out.println("____________________________");
+	}
+
 	public  void zerarJogo() {
 		jogador1 =0;
 		jogador2 =0;
 		tabuleiro = null;
 		definirRegra();
 	}
-	public void introducao() {
-		System.out.println("Você está jogando tananan, uma pequena explicação de como jogar, primeiro você "
-				+ "seleciona a peça que deseja mover, primeiro digitando a linha e depois a coluna, em seguida digite a "
-				+ "direção que deseja mover a peça, caso tente  mover para uma posição ocupada ou para fora do tabuleiro a jogada será perdida."
-				+ "para ganhar, quando a soma dos pontos adquiridos atingir 70%, quem tiver mais pontos ganha, em caso de empate,quem conseguir o proximo ponto ganha");
-		System.out.println();
-		System.out.println("Botões de movimento:");
-		System.out.println("W: Cima");
-		System.out.println("S: Baixo");
-		System.out.println("A: Esquerda");
-		System.out.println("D: Direita");
-		System.out.println();
+	
+	private boolean fimJogo() {
+		//retorna false se nenhuma condição foi atendida ou se o jogador deseja continuar e false se o jogador deseja que a partida seja encerrada
+		if((tabuleiro.retornarTotalPontos()*0.9) <= (jogador1 + jogador2)) {
+			
+			if(jogador1 >jogador2) {
+				System.out.println("Jogador 1 é o Vercedor, para o jogador 2 só sobra a vergonha!");
+				System.out.println("deseja jogar novamente s/n");
+				if("s".equalsIgnoreCase(entrada.next())) {
+					zerarJogo();
+					
+				}
+				else return true;
+			
+			}
+			if(jogador2 >jogador1) {
+				System.out.println("Jogador 1 é o Vercedor, para o jogador 2 só sobra a vergonha!");
+				System.out.println("deseja jogar novamente s/n");
+				if("s".equalsIgnoreCase(entrada.next())) {
+					zerarJogo();
+					
+				}
+				else return true;
+			}
+		}
+		return false;
 	}
 	
 	public Boolean jogoEmSi() {
@@ -104,31 +134,14 @@ public class Partida {
 			jogador2 += tabuleiro.jogar(x2, y2, direcao2);
 			mostrarPlacar();
 			
-			if((2) <= (jogador1 + jogador2)) {
-				
-				if(jogador1 >jogador2) {
-					System.out.println("Jogador 1 é o Vercedor, para o jogador 2 só sobra a vergonha!");
-					System.out.println("deseja jogar novamente s/n");
-					if("s".equalsIgnoreCase(entrada.next())) {
-						zerarJogo();
-					}
-					else break;
-				
-				}
-				if(jogador2 >jogador1) {
-					System.out.println("Jogador 1 é o Vercedor, para o jogador 2 só sobra a vergonha!");
-					System.out.println("deseja jogar novamente s/n");
-					if("s".equalsIgnoreCase(entrada.next())) {
-						zerarJogo();
-					}
-					else break;
-				}
-			}
+			if(fimJogo() ==true) break;
+			
 			
 		}
 		return null;
 	
 	}
+	
 	public static void main(String[] args) {
 		
 		Partida partida = new Partida();
